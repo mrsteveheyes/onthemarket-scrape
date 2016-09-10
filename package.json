@@ -1,0 +1,15 @@
+{
+  "name": "onethemarket-scrape",
+  "version": "0.0.1",
+  "description": "Scrape On The Market for the 10 items based on parameters.",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha --reporter spec"
+  },
+  "author": "Steve Heyes",
+  "license": "ISC",
+  "dependencies": {
+    "mocha": "^3.0.2",
+    "should": "^11.1.0"
+  }
+}
