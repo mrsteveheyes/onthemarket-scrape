@@ -6,6 +6,9 @@
   "scripts": {
     "test": "./node_modules/.bin/mocha --reporter spec"
   },
+  "bin": {
+    "onthemarket": "index.js"
+  },
   "author": "Steve Heyes",
   "license": "ISC",
   "dependencies": {
