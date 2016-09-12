@@ -1,13 +1,23 @@
+"use strict";
 var should = require('should');
+var OnTheMarket = require('../src/onthemarket.js');
 
-suite('onthemarket', function() {
-    setup(function() {
+describe('OnTheMarket', function() {
 
+    it('Create the correct bedroom and type segment', function(){
+        false.should.be.True();
     });
 
-    suite('#scrape()', function() {
-        test('\'initial test\' should be a string', function() {
-            'initial test'.should.be.a.String();
-        });
+    it('Create the correct type segment', function(){
+        false.should.be.True();
     });
+
+    it('Creates the correct URL to call', function(){
+        false.should.be.True();
+    });
+
+    it('Call the page and return the correct JSON object', function(){
+        false.should.be.True();
+    });
+
 });

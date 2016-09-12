@@ -4,7 +4,7 @@
   "description": "Scrape On The Market for the 10 items based on parameters.",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha --reporter spec"
+    "test": "mocha"
   },
   "bin": {
     "onthemarket": "index.js"
@@ -12,7 +12,10 @@
   "author": "Steve Heyes",
   "license": "ISC",
   "dependencies": {
+    "async": "^2.0.1",
     "mocha": "^3.0.2",
-    "should": "^11.1.0"
+    "request": "^2.74.0",
+    "should": "^11.1.0",
+    "sinon": "^1.17.5"
   }
 }
