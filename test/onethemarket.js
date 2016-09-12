@@ -2,7 +2,7 @@
 var should = require('should');
 var sinon = require('sinon');
 var OnTheMarket = require('../src/onthemarket.js');
-var data = require('./data/mocks.js');
+var data = require('./mocks/mocks.js');
 var mock = require('./mocks/birmingham-30000-100000-house-3');
 
 describe('OnTheMarket', function () {
