@@ -16,7 +16,20 @@ var OnTheMarket = function(area, min_price, max_price, type, min_bedrooms){
     this.area = area;
     this.min_price = min_price;
     this.max_price = max_price;
-    this.type = type;
+
+    switch(type){
+        case "house":
+        case "flats-and-apartment":
+        case "bungalows":
+        case "land":
+            this.type  = type;
+            break;
+
+        default:
+            this.type  = "property";
+            break;
+    }
+
     this.min_bedrooms = min_bedrooms;
 };
 
