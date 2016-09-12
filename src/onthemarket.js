@@ -1,4 +1,6 @@
 'use strict';
+var request = require('request');
+var cheerio = require('cheerio');
 
 /**
  * On The Market Class
@@ -12,12 +14,16 @@
  * @param min_bedrooms
  * @constructor
  */
-var OnTheMarket = function(area, min_price, max_price, type, min_bedrooms){
+var OnTheMarket = function (area, min_price, max_price, type, min_bedrooms) {
+
+    this.request = request;
+    this.cheerio = cheerio;
+
     this.area = area;
     this.min_price = min_price;
     this.max_price = max_price;
 
-    this.type  = type;
+    this.type = type;
 
     this.min_bedrooms = min_bedrooms;
 
@@ -34,10 +40,10 @@ OnTheMarket.prototype.createTypeSegment = function () {
     var segment = "";
 
     // Check the type parameter
-    switch(this.type){
+    switch (this.type) {
         // The list of excepted types
-        case "house":
-        case "flats-and-apartment":
+        case "houses":
+        case "flats-apartments":
         case "bungalows":
         case "land":
             segment = this.type;
@@ -50,9 +56,9 @@ OnTheMarket.prototype.createTypeSegment = function () {
     }
 
     // Check to see if there is a min bedroom requirement
-    if(this.min_bedrooms > 0) {
+    if (this.min_bedrooms > 0) {
         // Update the segment to reflect this requirement
-        segment = this.min_bedrooms+'-bed-'+segment;
+        segment = this.min_bedrooms + '-bed-' + segment;
     }
 
     // Return the segment
@@ -86,7 +92,7 @@ OnTheMarket.prototype.createParams = function () {
 
     // Check if there is more than one type param
     var types = this.type.split(',');
-    if(types.length > 1) {
+    if (types.length > 1) {
         // Create Property Type params
         types.forEach(function (type) {
             params.push({
@@ -118,10 +124,10 @@ OnTheMarket.prototype.createURL = function () {
         url = this.baseURL;
 
     // Add on the type segment
-    url += this.createTypeSegment()+"/";
+    url += this.createTypeSegment() + "/";
 
     // Add the area
-    url += this.area.toLowerCase()+"/?";
+    url += this.area.toLowerCase() + "/?";
 
     // Add the GET params to the URL
     params.forEach(function (param) {
@@ -133,6 +139,60 @@ OnTheMarket.prototype.createURL = function () {
 
     // Return URL
     return url;
+};
+
+/**
+ * Get JSON
+ *
+ * This function goes off to the URL and scrapes the HTML, return the top results in a JSON object
+ */
+OnTheMarket.prototype.getJSON = function () {
+    var url = this.createURL(),
+        _cheerio = this.cheerio,
+        _request = this.request,
+        json = {
+            data: []
+        };
+
+    return new Promise(function (resolve, reject) {
+
+        _request.get(url, function (error, status, body) {
+
+            var $ = _cheerio.load(body),
+                $results = $('li.result');
+
+            $results.each(function (i, $result) {
+
+                if (i < 10) {
+
+                    // Get the address
+                    var address = $('.address', this).text();
+
+                    // Get the price
+                    var price = $('.price', this).text();
+                    price = price.replace(/\D/g, '');
+
+                    // Get the type
+                    var title = $('.title', this).text(),
+                        // Get the number of rooms
+                        rooms = parseInt(title.charAt(0)),
+                        // Get the type from the title
+                        type = title.match(/(house|flat|apartment|land|bungalow)/g);
+
+                    // Add the data to the json array
+                    json.data.push({
+                        address: address,
+                        price: parseInt(price),
+                        type: type[0],
+                        number_rooms: rooms
+                    });
+                }
+            });
+
+            resolve(json);
+        });
+    });
+
 };
 
 // Export the class

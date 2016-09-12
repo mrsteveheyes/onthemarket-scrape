@@ -149,22 +149,26 @@ describe('OnTheMarket', function () {
         var testApp = new OnTheMarket("Birmingham", 30000, 100000, "house", 3);
 
         // Set up the stub for request.get
-        before(function(){
+        before(function () {
             sinon
                 .stub(testApp.request, 'get')
                 .yields(null, null, mock.html);
         });
 
         // Reset request.get once the test has finished
-        after(function(){
+        after(function () {
             testApp.request.get.restore();
         });
 
         it('Scrapes OnTheMarket and returns correct data', function () {
+            var json = "";
             // Get the json
-            var json = testApp.getJSON();
-
-            json.should.eql(data.mocks.testJSON);
+            testApp
+                .getJSON()
+                .then(function (returnedJSON) {
+                    json = returnedJSON;
+                    json.should.eql(data.mocks.testJSON);
+                });
 
         });
     });
