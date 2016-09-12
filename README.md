@@ -4,6 +4,7 @@ This tool is a simple CLI command than goes to [On The Market](http://onthemarke
 
 ```
 $ onthemarket Birmingham 30000 100000 houses 3
+$ onthemarket "Birmingham City Centre" 10000 15000000 flats-apartments 2
 ```
 
 ## Install
