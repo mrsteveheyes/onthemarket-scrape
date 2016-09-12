@@ -20,10 +20,18 @@ Go into the directory of the repo and run the install script.
 $ npm install -g
 ```
 
-# Usage
+## Usage
 
 ```
 $ onthemarket {area} {min price} {max price} {houses|flats-apartments|bungalows|land} {min number of rooms}
+```
+
+## Tests
+
+Tests are written with [Mocha](http://mochajs.org), [Should](https://shouldjs.github.io) and [Sinon](http://sinonjs.org). To run the tests, while in the terminal, got to the repos directory and run the test command
+ 
+```
+$ npm test
 ```
 
 _(OnTheMarket.com and the associated logos are registered trademarks of Agents' Mutual Ltd. This repo is a personal project and is no way afficliated with Agents' Mutual Ltd or OnTheMarket.com.)_ 
