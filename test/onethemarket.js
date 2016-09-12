@@ -1,6 +1,9 @@
 "use strict";
 var should = require('should');
+var sinon = require('sinon');
 var OnTheMarket = require('../src/onthemarket.js');
+var data = require('./data/mocks.js');
+var mock = require('./mocks/birmingham-30000-100000-house-3');
 
 describe('OnTheMarket', function () {
 
@@ -8,8 +11,8 @@ describe('OnTheMarket', function () {
 
         // Set up test args and expected
         var tests = [
-            {args: ["Birmingham", 30000, 100000, "house", 3], expected: '3-bed-house'},
-            {args: ["Birmingham", 30000, 100000, "flats-and-apartment", 0], expected: 'flats-and-apartment'},
+            {args: ["Birmingham", 30000, 100000, "houses", 3], expected: '3-bed-houses'},
+            {args: ["Birmingham", 30000, 100000, "flats-apartments", 0], expected: 'flats-apartments'},
         ];
 
         // Create tests for each test cases
@@ -26,8 +29,8 @@ describe('OnTheMarket', function () {
         });
 
         var optionTests = [
-            {arg: "house", expected: "house"},
-            {arg: "flats-and-apartment", expected: "flats-and-apartment"},
+            {arg: "houses", expected: "houses"},
+            {arg: "flats-apartments", expected: "flats-apartments"},
             {arg: "bungalows", expected: "bungalows"},
             {arg: "land", expected: "land"},
             {arg: false, expected: "property"},
@@ -54,7 +57,7 @@ describe('OnTheMarket', function () {
         // Param Test array
         var paramsTest = [
             {
-                args: ["Area", 1, 2, "house", 3],
+                args: ["Area", 1, 2, "houses", 3],
                 expected: [
                     {
                         param: "min-bedrooms",
@@ -75,7 +78,7 @@ describe('OnTheMarket', function () {
                 ]
             },
             {
-                args: ["Area", 1, 2, "house,bungalows", 3],
+                args: ["Area", 1, 2, "houses,bungalows", 3],
                 expected: [
                     {
                         param: "min-bedrooms",
@@ -91,7 +94,7 @@ describe('OnTheMarket', function () {
                     },
                     {
                         param: "prop-types",
-                        value: "house"
+                        value: "houses"
                     },
                     {
                         param: "prop-types",
@@ -121,11 +124,11 @@ describe('OnTheMarket', function () {
     describe('#createURL()', function () {
         // Create URL Test options
         var urlTests = [{
-            args: ["Area", 1, 2, "house", 3],
-            expected: 'https://www.onthemarket.com/for-sale/3-bed-house/area/?min-bedrooms=3&max-price=2&min-price=1&radius=1.0'
+            args: ["Area", 1, 2, "houses", 3],
+            expected: 'https://www.onthemarket.com/for-sale/3-bed-houses/area/?min-bedrooms=3&max-price=2&min-price=1&radius=1.0'
         }, {
-            args: ["Area", 1, 2, "house,bungalows", 3],
-            expected: 'https://www.onthemarket.com/for-sale/3-bed-property/area/?min-bedrooms=3&max-price=2&min-price=1&prop-types=house&prop-types=bungalows&radius=1.0'
+            args: ["Area", 1, 2, "houses,bungalows", 3],
+            expected: 'https://www.onthemarket.com/for-sale/3-bed-property/area/?min-bedrooms=3&max-price=2&min-price=1&prop-types=houses&prop-types=bungalows&radius=1.0'
         }];
 
         // Run tests for each options
@@ -141,17 +144,30 @@ describe('OnTheMarket', function () {
         });
     });
 
-    //
-    // it('Create the correct type segment', function(){
-    //     false.should.be.True();
-    // });
-    //
-    // it('Creates the correct URL to call', function(){
-    //     false.should.be.True();
-    // });
-    //
-    // it('Call the page and return the correct JSON object', function(){
-    //     false.should.be.True();
-    // });
+    describe('#getJSON()', function () {
+        // Set up the test app
+        var testApp = new OnTheMarket("Birmingham", 30000, 100000, "house", 3);
+
+        // Set up the stub for request.get
+        before(function(){
+            sinon
+                .stub(testApp.request, 'get')
+                .yields(null, null, mock.html);
+        });
+
+        // Reset request.get once the test has finished
+        after(function(){
+            testApp.request.get.restore();
+        });
+
+        it('Scrapes OnTheMarket and returns correct data', function () {
+            // Get the json
+            var json = testApp.getJSON();
+
+            json.should.eql(data.mocks.testJSON);
+
+        });
+    });
+
 
 });
