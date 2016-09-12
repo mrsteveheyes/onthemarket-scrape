@@ -20,6 +20,8 @@ var OnTheMarket = function(area, min_price, max_price, type, min_bedrooms){
     this.type  = type;
 
     this.min_bedrooms = min_bedrooms;
+
+    this.baseURL = "https://www.onthemarket.com/for-sale/";
 };
 
 /**
@@ -102,6 +104,35 @@ OnTheMarket.prototype.createParams = function () {
 
     // Return the params
     return params;
+};
+
+/**
+ * Create URL
+ *
+ * This function creates the URL to be used in the request
+ */
+OnTheMarket.prototype.createURL = function () {
+
+    // Get the params and base URL
+    var params = this.createParams(),
+        url = this.baseURL;
+
+    // Add on the type segment
+    url += this.createTypeSegment()+"/";
+
+    // Add the area
+    url += this.area.toLowerCase()+"/?";
+
+    // Add the GET params to the URL
+    params.forEach(function (param) {
+        url += param.param + "=" + param.value + "&";
+    });
+
+    // Remove last '&' from the string
+    url = url.slice(0, -1);
+
+    // Return URL
+    return url;
 };
 
 // Export the class
