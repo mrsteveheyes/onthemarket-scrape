@@ -72,6 +72,9 @@ var mocks = {
     }, {
         args: ["Area", 1, 2, "houses,bungalows", 3],
         expected: 'https://www.onthemarket.com/for-sale/3-bed-property/area/?min-bedrooms=3&max-price=2&min-price=1&prop-types=houses&prop-types=bungalows&radius=1.0'
+    }, {
+        args: ["Birmingham City Centre", 1, 2, "houses,bungalows", 3],
+        expected: 'https://www.onthemarket.com/for-sale/3-bed-property/birmingham-city-centre/?min-bedrooms=3&max-price=2&min-price=1&prop-types=houses&prop-types=bungalows&radius=1.0'
     }],
     testJSON: {
         data: [
