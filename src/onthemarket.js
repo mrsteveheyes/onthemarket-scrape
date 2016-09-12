@@ -91,7 +91,11 @@ OnTheMarket.prototype.createParams = function () {
     });
 
     // Check if there is more than one type param
-    var types = this.type.split(',');
+    var types = [];
+    if(this.type) {
+        types = this.type.split(',');
+    }
+
     if (types.length > 1) {
         // Create Property Type params
         types.forEach(function (type) {
@@ -127,7 +131,9 @@ OnTheMarket.prototype.createURL = function () {
     url += this.createTypeSegment() + "/";
 
     // Add the area
-    url += this.area.toLowerCase() + "/?";
+    if(this.area) {
+        url += this.area.toLowerCase() + "/?";
+    }
 
     // Add the GET params to the URL
     params.forEach(function (param) {
