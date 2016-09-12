@@ -106,7 +106,7 @@ describe('OnTheMarket', function () {
         ];
 
         paramsTest.forEach(function (test) {
-            it('Creates the correct array for the params to be used in the URL using type of "'+test.args[3]+'"', function () {
+            it('Creates the correct array for the params to be used in the URL using type of "' + test.args[3] + '"', function () {
                 // Create test app
                 var testApp = new OnTheMarket(test.args[0], test.args[1], test.args[2], test.args[3], test.args[4]);
                 // Call the createTypeSegement();
@@ -116,6 +116,29 @@ describe('OnTheMarket', function () {
                 result.should.eql(test.expected);
             })
         })
+    });
+
+    describe('#createURL()', function () {
+        // Create URL Test options
+        var urlTests = [{
+            args: ["Area", 1, 2, "house", 3],
+            expected: 'https://www.onthemarket.com/for-sale/3-bed-house/area/?min-bedrooms=3&max-price=2&min-price=1&radius=1.0'
+        }, {
+            args: ["Area", 1, 2, "house,bungalows", 3],
+            expected: 'https://www.onthemarket.com/for-sale/3-bed-property/area/?min-bedrooms=3&max-price=2&min-price=1&prop-types=house&prop-types=bungalows&radius=1.0'
+        }];
+
+        // Run tests for each options
+        urlTests.forEach(function (test) {
+            it('Creates the correct URL based upon the params', function () {
+                var testApp = new OnTheMarket(test.args[0], test.args[1], test.args[2], test.args[3], test.args[4]);
+                // Call the createURL();
+                var result = testApp.createURL();
+
+                // Assert result
+                result.should.equal(test.expected);
+            });
+        });
     });
 
     //
