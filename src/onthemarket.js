@@ -132,7 +132,10 @@ OnTheMarket.prototype.createURL = function () {
 
     // Add the area
     if(this.area) {
-        url += this.area.toLowerCase() + "/?";
+        // Make the area lower case and using '-' instead of spaces
+        var area = this.area.toLowerCase();
+        area = area.replace(/ /g, '-');
+        url += area + "/?";
     }
 
     // Add the GET params to the URL
