@@ -1,8 +1,7 @@
 'use strict';
 var request = require('request');
 var cheerio = require('cheerio');
-
-// Check for Promise
+// Promise Polyfill
 require('es6-promise').polyfill();
 
 /**
