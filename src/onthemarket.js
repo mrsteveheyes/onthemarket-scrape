@@ -2,6 +2,9 @@
 var request = require('request');
 var cheerio = require('cheerio');
 
+// Check for Promise
+require('es6-promise').polyfill();
+
 /**
  * On The Market Class
  *
