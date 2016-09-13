@@ -15,7 +15,7 @@ To install, clone the repo down to your local environment.
 $ git clone https://github.com/mrsteveheyes/onthemarket-scrape.git
 ```
 
-Go into the directory of the repo and run the install script.
+Go into the directory of the repo and run the install script. (You may need to run this in `sudo`, depending on your setup.)
 
 ```
 $ npm install -g
