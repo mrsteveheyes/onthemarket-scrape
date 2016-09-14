@@ -10,8 +10,12 @@ var params = process.argv.slice(2),
 // Run the app
 app
     // Get the JSON
-    .getJSON()
+    .getHTML()
     // Once it's resolved, write out the JSON
-    .then(function (json) {
+    .then(function (html) {
+        var json = app.getJSON(html);
         process.stdout.write(JSON.stringify(json));
-    });
+    }).catch(function (error) {
+        process.stdout.write(error.toString()
+    );
+});
