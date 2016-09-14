@@ -25,6 +25,8 @@ $ npm install -g
 
 ## Usage
 
+The app is set to use MongoDB on the localhost. To change the location of your MongoDB go to line 25 on `src/onthemarket.js` and change it there.
+
 Open up two terminal windows. In the first, start the listener
 
 ```
