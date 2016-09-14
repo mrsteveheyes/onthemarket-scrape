@@ -1,8 +1,10 @@
 # On The Market Scrape Tool
 
-This tool is a simple CLI command than goes to [On The Market](http://onthemarket.com) and pulls the top ten results from your given parameters.
+This tool provides 2 CLI commands. The first is a listener for events using `mubsub`. The second goes to [On The Market](http://onthemarket.com) and pulls the top ten results from your given parameters. It then publishes this data to the channel.
 
 ```
+$ onthemarket listen
+
 $ onthemarket Birmingham 30000 100000 houses 3
 $ onthemarket "Birmingham City Centre" 10000 15000000 flats-apartments 2
 ```
@@ -23,9 +25,21 @@ $ npm install -g
 
 ## Usage
 
+Open up two terminal windows. In the first, start the listener
+
+```
+$ onthemarket listen
+```
+
+Now that we are listening and subscribed to the channel, in the second terminal window run the search command with your parameters.
+
 ```
 $ onthemarket {area} {min price} {max price} {houses|flats-apartments|bungalows|land} {min number of rooms}
 ```
+
+The terminal with the command that is listening will spit out the JSON based on what you have searched for. 
+
+To use the command with just one terminal window, check out [version 0.1.1](https://github.com/mrsteveheyes/onthemarket-scrape/tree/0.1.1).
 
 ## Tests
 
