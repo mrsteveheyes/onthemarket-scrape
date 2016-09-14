@@ -1,6 +1,7 @@
 "use strict";
 var should = require('should');
 var sinon = require('sinon');
+require('should-sinon');
 var OnTheMarket = require('../src/onthemarket.js');
 var data = require('./mocks/mocks.js');
 var mock = require('./mocks/birmingham-30000-100000-house-3');
@@ -77,32 +78,76 @@ describe('OnTheMarket', function () {
     });
 
     describe('#getJSON()', function () {
+        it('Scrapes OnTheMarket and returns correct data', function () {
+            // Set up the test app
+            var testApp = new OnTheMarket("Birmingham", 30000, 100000, "house", 3);
+            var json = testApp.getJSON(mock.html);
+            json.should.eql(data.mocks.testJSON);
+        });
+    });
+
+    describe('#publishHTML()', function () {
         // Set up the test app
         var testApp = new OnTheMarket("Birmingham", 30000, 100000, "house", 3);
 
-        // Set up the stub for request.get
-        before(function () {
-            sinon
-                .stub(testApp.request, 'get')
-                .yields(null, null, mock.html);
+        describe('#getHTML()', function () {
+
+            // Set up the stub for request.get
+            before(function () {
+                sinon
+                    .stub(testApp.request, 'get')
+                    .yields(null, null, mock.html);
+            });
+
+            // Reset request.get once the test has finished
+            after(function () {
+                testApp.request.get.restore();
+            });
+
+            it('Scrapes OnTheMarket and returns correct HTML', function () {
+                // Get the HTML
+                testApp
+                    .getHTML()
+                    .then(function (html) {
+                        // The HTML should be the same as the mock
+                        html.should.equal(mock.html)
+                    });
+            });
         });
 
-        // Reset request.get once the test has finished
-        after(function () {
-            testApp.request.get.restore();
+        describe('#publish()', function () {
+            it('Push the HTML to mubsub successfully', function () {
+                // Set up the mock
+                var chanelMock = sinon
+                    .stub(testApp.channel, 'publish');
+
+                // Publish the HTML
+                testApp.publish(mock.html);
+
+                // Check the publish function is called on channel
+                chanelMock.should.be.calledWith('html', { html: mock.html});
+            });
         });
 
-        it('Scrapes OnTheMarket and returns correct data', function () {
-            var json = "";
-            // Get the json
-            testApp
-                .getJSON()
-                .then(function (returnedJSON) {
-                    json = returnedJSON;
-                    json.should.eql(data.mocks.testJSON);
-                });
 
-        });
+    });
+
+    describe('#listen()', function () {
+        // Set up the app
+        var testApp = new OnTheMarket("Birmingham", 30000, 100000, "house", 3);
+
+       it('Listens to mubsub channel', function () {
+           // Set up the mock
+           var chanelMock = sinon
+               .stub(testApp.channel, 'subscribe');
+
+           // Run the subscription
+           testApp.subscribe(mock.html);
+
+           // Check the mock function has been called with the right params
+           chanelMock.should.be.calledWith('html');
+       });
+
     });
 
 

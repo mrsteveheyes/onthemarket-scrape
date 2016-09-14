@@ -1,6 +1,6 @@
 {
   "name": "onethemarket-scrape",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Scrape On The Market for the 10 items based on parameters.",
   "main": "index.js",
   "scripts": {
@@ -16,8 +16,10 @@
     "cheerio": "^0.22.0",
     "es6-promise": "^3.3.0",
     "mocha": "^3.0.2",
+    "mubsub": "^1.2.0",
     "request": "^2.74.0",
     "should": "^11.1.0",
+    "should-sinon": "0.0.5",
     "sinon": "^1.17.5"
   }
 }
