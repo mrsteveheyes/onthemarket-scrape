@@ -231,5 +231,18 @@ OnTheMarket.prototype.publish = function(html) {
 
 };
 
+/**
+ * Subscribe the HTML to the channel
+ *
+ * @param html
+ */
+OnTheMarket.prototype.subscribe = function() {
+
+    this.channel.subscribe('html', function(){
+
+    });
+
+};
+
 // Export the class
 module.exports = OnTheMarket;
