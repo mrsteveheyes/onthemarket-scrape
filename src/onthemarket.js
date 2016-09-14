@@ -227,7 +227,10 @@ OnTheMarket.prototype.getJSON = function (html) {
  */
 OnTheMarket.prototype.publish = function(html) {
 
-    this.channel.publish('html', { html: html });
+    this.channel.publish('html', { html: html }, function(){
+        process.stdout.write('HTML found and published');
+        process.exit();
+    });
 
 };
 
