@@ -16,6 +16,7 @@
     "cheerio": "^0.22.0",
     "es6-promise": "^3.3.0",
     "mocha": "^3.0.2",
+    "mubsub": "^1.2.0",
     "request": "^2.74.0",
     "should": "^11.1.0",
     "should-sinon": "0.0.5",

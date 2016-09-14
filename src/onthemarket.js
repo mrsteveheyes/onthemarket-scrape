@@ -1,6 +1,8 @@
 'use strict';
-var request = require('request');
-var cheerio = require('cheerio');
+var request = require('request'),
+    cheerio = require('cheerio'),
+    mubsub = require('mubsub');
+
 // Promise Polyfill
 require('es6-promise').polyfill();
 
@@ -20,6 +22,8 @@ var OnTheMarket = function (area, min_price, max_price, type, min_bedrooms) {
 
     this.request = request;
     this.cheerio = cheerio;
+    this.client = mubsub('mongodb://localhost:27017/onthemarket');
+    this.channel = this.client.channel('html');
 
     this.area = area;
     this.min_price = min_price;
@@ -214,6 +218,17 @@ OnTheMarket.prototype.getJSON = function (html) {
     });
 
     return json;
+};
+
+/**
+ * Publish the HTML to the channel
+ *
+ * @param html
+ */
+OnTheMarket.prototype.publish = function(html) {
+
+    this.channel.publish('html', { html: html });
+
 };
 
 // Export the class
