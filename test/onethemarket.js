@@ -105,9 +105,11 @@ describe('OnTheMarket', function () {
             });
 
             it('Scrapes OnTheMarket and returns correct HTML', function () {
+                // Get the HTML
                 testApp
                     .getHTML()
                     .then(function (html) {
+                        // The HTML should be the same as the mock
                         html.should.equal(mock.html)
                     });
             });
@@ -115,11 +117,14 @@ describe('OnTheMarket', function () {
 
         describe('#publish()', function () {
             it('Push the HTML to mubsub successfully', function () {
+                // Set up the mock
                 var chanelMock = sinon
                     .stub(testApp.channel, 'publish');
 
+                // Publish the HTML
                 testApp.publish(mock.html);
 
+                // Check the publish function is called on channel
                 chanelMock.should.be.calledWith('html', { html: mock.html});
             });
         });
@@ -128,14 +133,18 @@ describe('OnTheMarket', function () {
     });
 
     describe('#listen()', function () {
+        // Set up the app
         var testApp = new OnTheMarket("Birmingham", 30000, 100000, "house", 3);
 
        it('Listens to mubsub channel', function () {
+           // Set up the mock
            var chanelMock = sinon
                .stub(testApp.channel, 'subscribe');
 
+           // Run the subscription
            testApp.subscribe(mock.html);
 
+           // Check the mock function has been called with the right params
            chanelMock.should.be.calledWith('html');
        });
 
