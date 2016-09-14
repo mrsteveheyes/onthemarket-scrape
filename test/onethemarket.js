@@ -139,9 +139,6 @@ describe('OnTheMarket', function () {
            chanelMock.should.be.calledWith('html');
        });
 
-        // it('On correct event, returns the JSON', function () {
-        //
-        // })
     });
 
 
