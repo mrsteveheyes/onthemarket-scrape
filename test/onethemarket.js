@@ -105,5 +105,46 @@ describe('OnTheMarket', function () {
         });
     });
 
+    describe('#publishHTML()', function () {
+        describe('#getHTML()', function () {
+            // Set up the test app
+            var testApp = new OnTheMarket("Birmingham", 30000, 100000, "house", 3);
+
+            // Set up the stub for request.get
+            before(function () {
+                sinon
+                    .stub(testApp.request, 'get')
+                    .yields(null, null, mock.html);
+            });
+
+            // Reset request.get once the test has finished
+            after(function () {
+                testApp.request.get.restore();
+            });
+
+            it('Scrapes OnTheMarket and returns correct HTML', function () {
+                testApp
+                    .getHTML()
+                    .then(function (html) {
+                        html.should.equal(mock.html)
+                    });
+            });
+        });
+
+        // it('Push the HTML to mubsub successfully', function () {
+
+        // });
+    });
+
+    // describe('#listen()', function () {
+    //    it('Listens to mubsub channel', function () {
+    //
+    //    });
+    //
+    //     it('On correct event, returns the JSON', function () {
+    //
+    //     })
+    // });
+
 
 });
