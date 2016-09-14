@@ -77,31 +77,11 @@ describe('OnTheMarket', function () {
     });
 
     describe('#getJSON()', function () {
-        // Set up the test app
-        var testApp = new OnTheMarket("Birmingham", 30000, 100000, "house", 3);
-
-        // Set up the stub for request.get
-        before(function () {
-            sinon
-                .stub(testApp.request, 'get')
-                .yields(null, null, mock.html);
-        });
-
-        // Reset request.get once the test has finished
-        after(function () {
-            testApp.request.get.restore();
-        });
-
         it('Scrapes OnTheMarket and returns correct data', function () {
-            var json = "";
-            // Get the json
-            testApp
-                .getJSON()
-                .then(function (returnedJSON) {
-                    json = returnedJSON;
-                    json.should.eql(data.mocks.testJSON);
-                });
-
+            // Set up the test app
+            var testApp = new OnTheMarket("Birmingham", 30000, 100000, "house", 3);
+            var json = testApp.getJSON(mock.html);
+            json.should.eql(data.mocks.testJSON);
         });
     });
 

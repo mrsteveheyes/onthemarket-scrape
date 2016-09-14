@@ -94,7 +94,7 @@ OnTheMarket.prototype.createParams = function () {
 
     // Check if there is more than one type param
     var types = [];
-    if(this.type) {
+    if (this.type) {
         types = this.type.split(',');
     }
 
@@ -133,7 +133,7 @@ OnTheMarket.prototype.createURL = function () {
     url += this.createTypeSegment() + "/";
 
     // Add the area
-    if(this.area) {
+    if (this.area) {
         // Make the area lower case and using '-' instead of spaces
         var area = this.area.toLowerCase();
         area = area.replace(/ /g, '-');
@@ -153,57 +153,67 @@ OnTheMarket.prototype.createURL = function () {
 };
 
 /**
- * Get JSON
+ * Get HTML
  *
- * This function goes off to the URL and scrapes the HTML, return the top results in a JSON object
+ * This function goes off to the URL and scrapes the HTML
  */
-OnTheMarket.prototype.getJSON = function () {
-    var url = this.createURL(),
-        _cheerio = this.cheerio,
-        _request = this.request,
-        json = {
-            data: []
-        };
+OnTheMarket.prototype.getHTML = function () {
+    var _this = this,
+        url = this.createURL();
 
     return new Promise(function (resolve, reject) {
-
-        _request.get(url, function (error, status, body) {
-
-            var $ = _cheerio.load(body),
-                $results = $('li.result');
-
-            $results.each(function (i, $result) {
-
-                if (i < 10) {
-
-                    // Get the address
-                    var address = $('.address', this).text();
-
-                    // Get the price
-                    var price = $('.price', this).text();
-                    price = price.replace(/\D/g, '');
-
-                    // Get the type
-                    var title = $('.title', this).text(),
-                        // Get the number of rooms
-                        rooms = parseInt(title.charAt(0)),
-                        // Get the type from the title
-                        type = title.match(/(house|flat|apartment|land|bungalow)/g);
-
-                    // Add the data to the json array
-                    json.data.push({
-                        address: address,
-                        price: parseInt(price),
-                        type: type[0],
-                        number_rooms: rooms
-                    });
-                }
-            });
-
-            resolve(json);
+        _this.request.get(url, function (error, status, body) {
+            if (error) {
+                reject(error)
+            }
+            resolve(body);
         });
     });
+};
 
+/**
+ * Get JSON
+ *
+ * This function takes the HTML, parses it and returns the top results in a JSON object
+ */
+OnTheMarket.prototype.getJSON = function (html) {
+    var _cheerio = this.cheerio,
+        json = {
+            data: []
+        },
+        _this = this;
+    var $ = _cheerio.load(html),
+        $results = $('li.result');
+
+    $results.each(function (i, $result) {
+
+        if (i < 10) {
+
+            // Get the address
+            var address = $('.address', this).text();
+
+            // Get the price
+            var price = $('.price', this).text();
+            price = price.replace(/\D/g, '');
+
+            // Get the type
+            var title = $('.title', this).text(),
+                // Get the number of rooms
+                rooms = parseInt(title.charAt(0)),
+                // Get the type from the title
+                type = title.match(/(house|flat|apartment|land|bungalow)/g);
+
+            // Add the data to the json array
+            json.data.push({
+                address: address,
+                price: parseInt(price),
+                type: type[0],
+                number_rooms: rooms
+            });
+        }
+    });
+
+    return json;
 };
 
 // Export the class
