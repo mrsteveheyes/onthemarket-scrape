@@ -127,15 +127,21 @@ describe('OnTheMarket', function () {
 
     });
 
-    // describe('#listen()', function () {
-    //    it('Listens to mubsub channel', function () {
-    //
-    //    });
-    //
-    //     it('On correct event, returns the JSON', function () {
-    //
-    //     })
-    // });
+    describe('#listen()', function () {
+       it('Listens to mubsub channel', function () {
+           var chanelMock = sinon
+               .stub(testApp.channel, 'subscribe');
+           var mockFunction = function(response){};
+
+           testApp.subscribe(mock.html, mockFunction);
+
+           chanelMock.should.be.calledWith('html', mockFunction);
+       });
+
+        // it('On correct event, returns the JSON', function () {
+        //
+        // })
+    });
 
 
 });
