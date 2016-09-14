@@ -1,6 +1,7 @@
 "use strict";
 var should = require('should');
 var sinon = require('sinon');
+require('should-sinon');
 var OnTheMarket = require('../src/onthemarket.js');
 var data = require('./mocks/mocks.js');
 var mock = require('./mocks/birmingham-30000-100000-house-3');
@@ -86,9 +87,10 @@ describe('OnTheMarket', function () {
     });
 
     describe('#publishHTML()', function () {
+        // Set up the test app
+        var testApp = new OnTheMarket("Birmingham", 30000, 100000, "house", 3);
+
         describe('#getHTML()', function () {
-            // Set up the test app
-            var testApp = new OnTheMarket("Birmingham", 30000, 100000, "house", 3);
 
             // Set up the stub for request.get
             before(function () {
@@ -111,9 +113,18 @@ describe('OnTheMarket', function () {
             });
         });
 
-        // it('Push the HTML to mubsub successfully', function () {
+        describe('#publish()', function () {
+            it('Push the HTML to mubsub successfully', function () {
+                var chanelMock = sinon
+                    .stub(testApp.channel, 'publish');
 
-        // });
+                testApp.publish(mock.html);
+
+                chanelMock.should.be.calledWith('html', { html: mock.html});
+            });
+        });
+
+
     });
 
     // describe('#listen()', function () {
