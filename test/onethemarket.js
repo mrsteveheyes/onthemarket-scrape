@@ -128,14 +128,15 @@ describe('OnTheMarket', function () {
     });
 
     describe('#listen()', function () {
+        var testApp = new OnTheMarket("Birmingham", 30000, 100000, "house", 3);
+
        it('Listens to mubsub channel', function () {
            var chanelMock = sinon
                .stub(testApp.channel, 'subscribe');
-           var mockFunction = function(response){};
 
-           testApp.subscribe(mock.html, mockFunction);
+           testApp.subscribe(mock.html);
 
-           chanelMock.should.be.calledWith('html', mockFunction);
+           chanelMock.should.be.calledWith('html');
        });
 
         // it('On correct event, returns the JSON', function () {
