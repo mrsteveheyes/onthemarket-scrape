@@ -237,9 +237,12 @@ OnTheMarket.prototype.publish = function(html) {
  * @param html
  */
 OnTheMarket.prototype.subscribe = function() {
+    var _this = this;
 
-    this.channel.subscribe('html', function(){
+    this.channel.subscribe('html', function(html){
+        var json = _this.getJSON(html.html);
 
+        process.stdout.write(JSON.stringify(json)+"\n");
     });
 
 };
